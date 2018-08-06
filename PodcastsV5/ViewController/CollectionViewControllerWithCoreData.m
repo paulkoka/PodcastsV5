@@ -99,7 +99,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     
-    [fetchRequest setFetchBatchSize:15];
+    [fetchRequest setFetchBatchSize:20];
     
     return fetchRequest;
     
