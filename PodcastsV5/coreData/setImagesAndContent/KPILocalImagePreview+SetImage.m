@@ -8,6 +8,7 @@
 
 #import "KPILocalImagePreview+SetImage.h"
 #import "downlodDataFromWeb.h"
+#import "CheckForOldHanselman.h"
 
 
 @implementation KPILocalImagePreview (SetImage)
@@ -23,18 +24,14 @@
 
 -(void) setupImage{
     if (!self.image) {
-        
+        CheckForOldHanselman* check = [[CheckForOldHanselman alloc]init];
+        if (![check checkForOldHanselman:self.toItem]) {
             downlodDataFromWeb* downloader = [[downlodDataFromWeb alloc] init];
             [downloader downloadDataForKPIItem:self.toItem];
-    }
-    else{
-        NSLog(@"exists");
+        }
+
     }
         
 }
-
-
-
-
 
 @end

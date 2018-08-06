@@ -12,6 +12,7 @@
 #import "KPILocalImagePreview+CoreDataClass.h"
 #import <UIKit/UIKit.h>
 #import "UIImage+Compression.h"
+#import "CheckForOldHanselman.h"
 
 @interface downlodDataFromWeb()<NSURLSessionDownloadDelegate>
 
@@ -48,29 +49,30 @@
     
   //  __weak typeof(self) weakself = self;
     
+    CheckForOldHanselman* old = [[CheckForOldHanselman alloc] init];
     
-    
-    
-    NSManagedObjectContext* context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    
-    [context setParentContext: self.item.managedObjectContext];
-    
-    NSData* data = [NSData dataWithContentsOfURL:location];
-    UIImage* image = [UIImage imageWithData:data];
-    self.item.imageFull.image =  UIImageJPEGRepresentation(image, 0.5);
-    self.item.imagePreview.image = [UIImage imageWithImage:image compressedWithFactor:0.05];
-    
-  //  [context performBlock:^{
-       
-        NSError* error;
-        [context save:&error];
-    //}];
-    
-    [self.item.managedObjectContext performBlock:^{
-        NSError* error;
-        [self.item.managedObjectContext save:&error];
-    }];
-    
+    BOOL check = [old checkForOldHanselman:self.item];
+    if (!check) {
+        NSManagedObjectContext* context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
+        [context setParentContext: self.item.managedObjectContext];
+        
+        NSData* data = [NSData dataWithContentsOfURL:location];
+        UIImage* image = [UIImage imageWithData:data];
+        self.item.imageFull.image =  UIImageJPEGRepresentation(image, 0.5);
+        self.item.imagePreview.image = [UIImage imageWithImage:image compressedWithFactor:0.05];
+        
+        [context performBlock:^{
+            
+            NSError* error;
+            [context save:&error];
+        }];
+        
+        [self.item.managedObjectContext performBlock:^{
+            NSError* error;
+            [self.item.managedObjectContext save:&error];
+        }];
+    }   
 }
 
 @end

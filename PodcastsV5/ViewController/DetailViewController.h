@@ -1,5 +1,5 @@
 //
-//  CollectionVewCell.h
+//  DetailViewController.h
 //  PodcastsV5
 //
 //  Created by Pavel Koka on 8/5/18.
@@ -9,7 +9,7 @@
 #import "KPIItem+CoreDataClass.h"
 
 
-@interface CollectionVewCell : UICollectionViewCell
--(void)setDataToLabelsFrom:(KPIItem*)item;
+@interface DetailViewController : UIViewController
+-(void)itemWasSelected:(KPIItem *)item;
 
 @end

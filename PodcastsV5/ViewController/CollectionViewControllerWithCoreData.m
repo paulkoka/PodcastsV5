@@ -9,8 +9,13 @@
 #import "CollectionViewControllerWithCoreData.h"
 #import "NSString+stringFromDate.h"
 #import "CollectionVewCell.h"
+#import "DetailViewController.h"
 
-@interface CollectionViewControllerWithCoreData () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@interface CollectionViewControllerWithCoreData ()   <UICollectionViewDelegateFlowLayout>
+
+@property (strong, nonatomic) UISegmentedControl* segmentedControl;
+@property (strong, nonatomic) DetailViewController* detail;
 
 @end
 
@@ -21,111 +26,94 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error]) {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
-    }
-    
     self.collectionView.backgroundColor = UIColor.whiteColor;
     self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
     self.collectionView.allowsSelection = YES;
-    self.title = @"itemsFromRSS";
+    self.title = @"All Items";
     
     
+    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All",@"Saved"]];
+    self.segmentedControl.selectedSegmentIndex = 0;
+    
+    [self.segmentedControl addTarget:self
+                              action:@selector(segmentedControlValueDidChange:)
+                    forControlEvents:UIControlEventValueChanged];
+    self.navigationItem.titleView = self.segmentedControl;
     
     
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.navigationController.navigationBar.backgroundColor = UIColor.whiteColor;
+    self.navigationController.navigationBar.barTintColor = UIColor.whiteColor;
     
-    // Register cell classes
+    
+
     [self.collectionView registerClass:[CollectionVewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    // Do any additional setup after loading the view.
+     self.detail = [[DetailViewController alloc] init];
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
 
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    //#warning Incomplete implementation, return the number of sections
-    return 1;
+
+    return [[self.fetchedResultsController sections] count];
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    //#warning Incomplete implementation, return the number of items
-    long numberOfObjects = [[[_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
-    if (numberOfObjects) {
-        return numberOfObjects;
-    } else{
-        return 12;
-    }
+
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CollectionVewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    if ([[[_fetchedResultsController sections] objectAtIndex:0] numberOfObjects]) {
-        
-        [cell setDataToLabelsFrom:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        return cell;
-    }
-    
-    // Configure the cell
+    [cell setDataToLabelsFrom:[self.fetchedResultsController objectAtIndexPath:indexPath]];
     return cell;
     
 }
 
-#pragma mark <UICollectionViewDelegate>
+#pragma mark - segmentedControl
+-(void)segmentedControlValueDidChange:(UISegmentedControl*)control {
+    NSLog(@"value changed");
+    
+    
+    
+    [self.collectionView reloadData];
+}
 
-/*
- // Uncomment this method to specify if the specified item should be highlighted during tracking
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
- return YES;
- }
- */
 
-/*
- // Uncomment this method to specify if the specified item should be selected
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
- return YES;
- }
- */
 
-/*
- // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
- return NO;
- }
- 
- - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
- return NO;
- }
- 
- - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
- 
- }
- */
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self.collectionView cellForItemAtIndexPath:indexPath].backgroundColor = UIColor.whiteColor;
+  
+    [self.detail itemWasSelected:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+    [self.splitViewController showDetailViewController:self.detail sender:self];
+    
+    [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+}
+
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+    return YES;
+}
+
+
 
 #pragma mark NSFetchedResultsController
 
@@ -135,13 +123,13 @@ static NSString * const reuseIdentifier = @"Cell";
         return _fetchedResultsController;
     }
     
-    AppDelegate* appDelegate = ((AppDelegate*) UIApplication.sharedApplication.delegate);
-    self.managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+//    AppDelegate* appDelegate = ((AppDelegate*) UIApplication.sharedApplication.delegate);
+//    self.managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+//
+//    [self.managedObjectContext setParentContext:appDelegate.persistentContainer.viewContext];
     
-    [self.managedObjectContext setParentContext:appDelegate.persistentContainer.viewContext];
     
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSFetchRequest *fetchRequest = KPIItem.fetchRequest;
     NSEntityDescription *entity = [NSEntityDescription
                                    entityForName:@"KPIItem" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
@@ -153,43 +141,74 @@ static NSString * const reuseIdentifier = @"Cell";
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     
-    [fetchRequest setFetchBatchSize:10];
+    [fetchRequest setFetchBatchSize:15];
     
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                        managedObjectContext:_managedObjectContext sectionNameKeyPath:nil
+                                        managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil
                                                    cacheName:nil];
     
-    self.fetchedResultsController = theFetchedResultsController;
-    _fetchedResultsController.delegate = self;
+   
+    theFetchedResultsController.delegate = self;
     
-    [self performFetch];
     
+     self.fetchedResultsController = theFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![theFetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, error.userInfo);
+        abort();
+    }
+    
+    _fetchedResultsController = theFetchedResultsController;
     return _fetchedResultsController;
     
 }
 
-- (void)performFetch
-{
-    if (self.fetchedResultsController) {
-        if (self.fetchedResultsController.fetchRequest.predicate) {
-            if (self.debug) NSLog(@"[%@ %@] fetching %@ with predicate: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName, self.fetchedResultsController.fetchRequest.predicate);
-        } else {
-            if (self.debug) NSLog(@"[%@ %@] fetching all %@ (i.e., no predicate)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName);
-        }
-        NSError *error;
-        BOOL success = [self.fetchedResultsController performFetch:&error];
-        if (!success) NSLog(@"[%@ %@] performFetch: failed", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-        if (error) NSLog(@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]);
-    } else {
-        if (self.debug) NSLog(@"[%@ %@] no NSFetchedResultsController (yet?)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-    }
-    [self.collectionView reloadData];
-}
+//- (void)performFetch
+//{
+//    if (self.fetchedResultsController) {
+//        if (self.fetchedResultsController.fetchRequest.predicate) {
+//            if (self.debug) NSLog(@"[%@ %@] fetching %@ with predicate: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName, self.fetchedResultsController.fetchRequest.predicate);
+//        } else {
+//            if (self.debug) NSLog(@"[%@ %@] fetching all %@ (i.e., no predicate)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName);
+//        }
+//        NSError *error;
+//        BOOL success = [self.fetchedResultsController performFetch:&error];
+//        if (!success) NSLog(@"[%@ %@] performFetch: failed", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+//        if (error) NSLog(@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]);
+//    } else {
+//        if (self.debug) NSLog(@"[%@ %@] no NSFetchedResultsController (yet?)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+//    }
+//    [self.collectionView reloadData];
+//}
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.collectionView reloadData];
+//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+//    [self.collectionView reloadData];
+//}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+            break;
+        case NSFetchedResultsChangeMove:
+            return;
+        case NSFetchedResultsChangeUpdate:
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+            break;
+        default:
+            return;
+    }
+    
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
@@ -199,7 +218,8 @@ static NSString * const reuseIdentifier = @"Cell";
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+            //[collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+            [collectionView reloadData];
             break;
             
         case NSFetchedResultsChangeDelete:
@@ -210,6 +230,7 @@ static NSString * const reuseIdentifier = @"Cell";
         case NSFetchedResultsChangeUpdate:
             
             [collectionView cellForItemAtIndexPath:indexPath];
+
             break;
             
         case NSFetchedResultsChangeMove:
@@ -223,22 +244,10 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-            break;
-    }
-}
+
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+
     [self.collectionView reloadData];
 }
 

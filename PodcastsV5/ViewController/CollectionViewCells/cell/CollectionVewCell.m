@@ -1,14 +1,14 @@
 //
 //  CollectionVewCell.m
-//  PadcastsApp
+//  PodcastsV5
 //
-//  Created by Dzmitry Tarelkin on 7/25/18.
-//  Copyright © 2018 Dzmitry Tarelkin. All rights reserved.
-//
+//  Created by Pavel Koka on 8/5/18.
+//  Copyright © 2018 Pavel Koka. All rights reserved.
 
 #import "CollectionVewCell.h"
 #import "NSString+stringFromDate.h"
 #import "KPILocalImagePreview+SetImage.h"
+#import "CheckForOldHanselman.h"
 //#import <UIKit/UIKit.h>
 
 static NSString * const kMusicPlaceHolder = @"placeholder";
@@ -97,15 +97,22 @@ static NSString * const kVideoPlaceHolder = @"placeholder";
     [self.author setTextAlignment:NSTextAlignmentLeft];
     [self setDateLabelWithDate:[NSString getStringFromDate:item.publicationDate] ];
     self.duration.text = item.duration;
+    
+    CheckForOldHanselman* check = [[CheckForOldHanselman alloc] init];
+    
+    BOOL oldHanselman = [check checkForOldHanselman:item];
+    
+    if (oldHanselman) {
+        self.imageView.image = [UIImage imageNamed:@"hanselminutesimgS"];
+        return;
+    }
+    
     if (!item.imagePreview.image) {
         self.imageView.image = [UIImage imageNamed:@"comingSoonPlaceholder"];
     }
     else{
     self.imageView.image = [UIImage imageWithData:item.imagePreview.image];
     }
-    
-    NSLog(@"cell created");
-
 
 }
 

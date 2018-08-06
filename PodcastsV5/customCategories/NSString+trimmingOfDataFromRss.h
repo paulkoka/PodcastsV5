@@ -12,5 +12,6 @@
 
 +(NSString*) trimmingOfDataFromRss :(NSData*)CDATABlock;
 
++(NSString*)preapreforSaving:(NSString*)string1 and:(NSString*) string2;
 
 @end

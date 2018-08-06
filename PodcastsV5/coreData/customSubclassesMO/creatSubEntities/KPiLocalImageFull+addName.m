@@ -7,6 +7,7 @@
 //
 
 #import "KPiLocalImageFull+addName.h"
+#import <UIKit/UIKit.h>
 
 static NSString* entityNameImg = @"KPiLocalImageFull";
 

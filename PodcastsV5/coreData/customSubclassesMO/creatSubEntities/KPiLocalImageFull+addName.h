@@ -8,7 +8,11 @@
 
 #import "KPiLocalImageFull+CoreDataClass.h"
 
+static NSString* hanselmanOld = @"hanselmanOld";
+
 @interface KPiLocalImageFull (addName)
+
+
 
 +(KPiLocalImageFull*) addName:(NSString*) path inManagedObjectContext:(NSManagedObjectContext*) context;
 

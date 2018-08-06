@@ -60,7 +60,6 @@ static NSString* url = @"url";
 }
 
 -(void) parserDidStartDocument:(NSXMLParser *)parser{
-    NSLog(@"parserDidStartDocument");
     self.inItemElement = NO;
 }
 
@@ -124,23 +123,13 @@ static NSString* url = @"url";
             return;
         }
         
-        string = [self preapreforSaving:string];
+        string = [NSString preapreforSaving:string and:self.currentElementName];
         
         [self.itemFromRSS setObject:string forKey:self.currentElementName];
     }
 }
 
--(NSString*)preapreforSaving:(NSString*)string{
-    if ([self.currentElementName isEqualToString:_tags.title]) {
-        if ([self.capturedCharacters containsString:@" | "]) {
-            NSRange range = [string rangeOfString:@" | "];
-            if (NSNotFound != range.location) {
-                string = [string substringToIndex:(range.location)];
-            }
-        }
-    }
-    return string;
-}
+
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
@@ -167,8 +156,6 @@ static NSString* url = @"url";
     self.inItemElement = NO;
 }
 
--(void) parserDidEndDocument:(NSXMLParser *)parser{
-    NSLog(@"parserDidEndDocument");
-}
+
 
 @end
