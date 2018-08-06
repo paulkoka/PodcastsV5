@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F0D504A2117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F0D50482117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld */; };
 		2F2CA8E72117623D00BDB5DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA8E62117623D00BDB5DC /* AppDelegate.m */; };
 		2F2CA8F32117623D00BDB5DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F12117623D00BDB5DC /* Main.storyboard */; };
 		2F2CA8F52117623E00BDB5DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F42117623E00BDB5DC /* Assets.xcassets */; };
 		2F2CA8F82117623E00BDB5DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F62117623E00BDB5DC /* LaunchScreen.storyboard */; };
 		2F2CA8FB2117623E00BDB5DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA8FA2117623E00BDB5DC /* main.m */; };
-		2F2CA9032117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9012117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodeld */; };
 		2F2CA9292117628F00BDB5DC /* KPIContent+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9072117628F00BDB5DC /* KPIContent+CoreDataProperties.m */; };
 		2F2CA92A2117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9082117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m */; };
 		2F2CA92B2117628F00BDB5DC /* KPILocalImagePreview+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9092117628F00BDB5DC /* KPILocalImagePreview+CoreDataProperties.m */; };
@@ -45,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F0D50492117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KPIpodcasterV2frAug03.xcdatamodel; sourceTree = "<group>"; };
 		2F2CA8E22117623D00BDB5DC /* PodcastsV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodcastsV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F2CA8E52117623D00BDB5DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2F2CA8E62117623D00BDB5DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -53,7 +54,6 @@
 		2F2CA8F72117623E00BDB5DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F2CA8F92117623E00BDB5DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F2CA8FA2117623E00BDB5DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2F2CA9022117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KPIpodcasterV2frAug03.xcdatamodel; sourceTree = "<group>"; };
 		2F2CA9062117628F00BDB5DC /* KPIContent+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KPIContent+CoreDataClass.h"; sourceTree = "<group>"; };
 		2F2CA9072117628F00BDB5DC /* KPIContent+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KPIContent+CoreDataProperties.m"; sourceTree = "<group>"; };
 		2F2CA9082117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KPILocalImagePreview+CoreDataClass.m"; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 				2F2CA8F62117623E00BDB5DC /* LaunchScreen.storyboard */,
 				2F2CA8F92117623E00BDB5DC /* Info.plist */,
 				2F2CA8FA2117623E00BDB5DC /* main.m */,
-				2F2CA9012117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodeld */,
+				2F0D50482117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld */,
 			);
 			path = PodcastsV5;
 			sourceTree = "<group>";
@@ -404,6 +404,7 @@
 				2F2CA946211762E400BDB5DC /* NSDateFormatter+dateWithStringFromRSS.m in Sources */,
 				2F2CA95C211762F100BDB5DC /* SourseURLforRead.m in Sources */,
 				2F2CA9A32117993D00BDB5DC /* DetailViewController.m in Sources */,
+				2F0D504A2117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld in Sources */,
 				2F2CA9A721179D8700BDB5DC /* SplitController.m in Sources */,
 				2F2CA9A0211780BE00BDB5DC /* CollectionVewCell.m in Sources */,
 				2F2CA92F2117628F00BDB5DC /* KPIItem+CoreDataClass.m in Sources */,
@@ -427,7 +428,6 @@
 				2F2CA9312117628F00BDB5DC /* KPILocalImagePreview+SetImage.m in Sources */,
 				2F2CA92A2117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m in Sources */,
 				2F2CA9302117628F00BDB5DC /* KPIItem+CoreDataProperties.m in Sources */,
-				2F2CA9032117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodeld in Sources */,
 				2F2CA9322117628F00BDB5DC /* KPIContent+addName.m in Sources */,
 				2F2CA97B21176F0800BDB5DC /* CollectionViewControllerWithCoreData.m in Sources */,
 			);
@@ -623,14 +623,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2F2CA9012117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodeld */ = {
+		2F0D50482117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				2F2CA9022117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodel */,
+				2F0D50492117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodel */,
 			);
-			currentVersion = 2F2CA9022117626B00BDB5DC /* KPIpodcasterV2frAug03.xcdatamodel */;
-			name = KPIpodcasterV2frAug03.xcdatamodeld;
-			path = ../../finalPodcasts/finalPodcasts/KPIpodcasterV2frAug03.xcdatamodeld;
+			currentVersion = 2F0D50492117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodel */;
+			path = KPIpodcasterV2frAug03.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
