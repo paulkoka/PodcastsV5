@@ -10,11 +10,10 @@
 #import "NSString+stringFromDate.h"
 #import "CollectionVewCell.h"
 #import "DetailViewController.h"
-
+#import "KPILocalImagePreview+SetImage.h"
 
 @interface CollectionViewControllerWithCoreData ()   <UICollectionViewDelegateFlowLayout>
 
-@property (strong, nonatomic) UISegmentedControl* segmentedControl;
 @property (strong, nonatomic) DetailViewController* detail;
 
 @end
@@ -32,22 +31,10 @@ static NSString * const reuseIdentifier = @"Cell";
     self.collectionView.dataSource = self;
     
     self.collectionView.allowsSelection = YES;
-    self.title = @"All Items";
-    
-    
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All",@"Saved"]];
-    self.segmentedControl.selectedSegmentIndex = 0;
-    
-    [self.segmentedControl addTarget:self
-                              action:@selector(segmentedControlValueDidChange:)
-                    forControlEvents:UIControlEventValueChanged];
-    self.navigationItem.titleView = self.segmentedControl;
-    
+    self.title = @"All podcasts";
     
     self.navigationController.navigationBar.backgroundColor = UIColor.whiteColor;
     self.navigationController.navigationBar.barTintColor = UIColor.whiteColor;
-    
-    
 
     [self.collectionView registerClass:[CollectionVewCell class] forCellWithReuseIdentifier:reuseIdentifier];
      self.detail = [[DetailViewController alloc] init];
@@ -60,12 +47,10 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 
-
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
-#pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
 
@@ -86,16 +71,6 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 
-#pragma mark - segmentedControl
--(void)segmentedControlValueDidChange:(UISegmentedControl*)control {
-    NSLog(@"value changed");
-    
-    
-    
-    [self.collectionView reloadData];
-}
-
-
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -113,7 +88,22 @@ static NSString * const reuseIdentifier = @"Cell";
     return YES;
 }
 
-
+-(NSFetchRequest*)newRequest{
+    NSFetchRequest *fetchRequest = KPIItem.fetchRequest;
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"KPIItem" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
+                              initWithKey:@"publicationDate" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+    
+    [fetchRequest setFetchBatchSize:15];
+    
+    return fetchRequest;
+    
+}
 
 #pragma mark NSFetchedResultsController
 
@@ -123,28 +113,8 @@ static NSString * const reuseIdentifier = @"Cell";
         return _fetchedResultsController;
     }
     
-//    AppDelegate* appDelegate = ((AppDelegate*) UIApplication.sharedApplication.delegate);
-//    self.managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-//
-//    [self.managedObjectContext setParentContext:appDelegate.persistentContainer.viewContext];
-    
-    
-    NSFetchRequest *fetchRequest = KPIItem.fetchRequest;
-    NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"KPIItem" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
-                              initWithKey:@"publicationDate" ascending:NO];
-    
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-    
-    [fetchRequest setFetchBatchSize:15];
-    
     NSFetchedResultsController *theFetchedResultsController =
-    [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+    [[NSFetchedResultsController alloc] initWithFetchRequest:[self newRequest]
                                         managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil
                                                    cacheName:nil];
     
@@ -167,27 +137,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 
-//- (void)performFetch
-//{
-//    if (self.fetchedResultsController) {
-//        if (self.fetchedResultsController.fetchRequest.predicate) {
-//            if (self.debug) NSLog(@"[%@ %@] fetching %@ with predicate: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName, self.fetchedResultsController.fetchRequest.predicate);
-//        } else {
-//            if (self.debug) NSLog(@"[%@ %@] fetching all %@ (i.e., no predicate)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), self.fetchedResultsController.fetchRequest.entityName);
-//        }
-//        NSError *error;
-//        BOOL success = [self.fetchedResultsController performFetch:&error];
-//        if (!success) NSLog(@"[%@ %@] performFetch: failed", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-//        if (error) NSLog(@"[%@ %@] %@ (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd), [error localizedDescription], [error localizedFailureReason]);
-//    } else {
-//        if (self.debug) NSLog(@"[%@ %@] no NSFetchedResultsController (yet?)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-//    }
-//    [self.collectionView reloadData];
-//}
 
-//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//    [self.collectionView reloadData];
-//}
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
@@ -218,7 +168,7 @@ static NSString * const reuseIdentifier = @"Cell";
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            //[collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+           
             [collectionView reloadData];
             break;
             

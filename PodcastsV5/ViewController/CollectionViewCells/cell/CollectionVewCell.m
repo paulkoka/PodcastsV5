@@ -106,14 +106,25 @@ static NSString * const kVideoPlaceHolder = @"placeholder";
         self.imageView.image = [UIImage imageNamed:@"hanselminutesimgS"];
         return;
     }
-    
+   
     if (!item.imagePreview.image) {
+        [item.imagePreview performSelector: @selector(awakeFromFetch)];
         self.imageView.image = [UIImage imageNamed:@"comingSoonPlaceholder"];
     }
     else{
-    self.imageView.image = [UIImage imageWithData:item.imagePreview.image];
+        [self setImage:item];
     }
 
+}
+
+-(void)setImage:(KPIItem*) item{
+    self.imageView.image = [UIImage imageWithData:item.imagePreview.image];
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.5f;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
+    
+    [self.imageView.layer addAnimation:transition forKey:nil];
 }
 
 

@@ -24,14 +24,17 @@
 
 -(void) setupImage{
     if (!self.image) {
-        CheckForOldHanselman* check = [[CheckForOldHanselman alloc]init];
-        if (![check checkForOldHanselman:self.toItem]) {
+        
             downlodDataFromWeb* downloader = [[downlodDataFromWeb alloc] init];
             [downloader downloadDataForKPIItem:self.toItem];
-        }
+        
 
     }
-        
+}
+
+-(void)awakeFromInsert{
+    [super awakeFromInsert];
+
 }
 
 @end
