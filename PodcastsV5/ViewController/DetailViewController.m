@@ -12,9 +12,11 @@
 #import "NSString+stringFromDate.h"
 #import "KPIContent+CoreDataClass.h"
 #import "CheckForOldHanselman.h"
+#import <QuartzCore/QuartzCore.h>
 
+static float progress;
 
-@interface DetailViewController ()
+@interface DetailViewController ()<NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate>
 
 
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -24,12 +26,15 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UILabel *detailsLabel;
+@property (strong, nonatomic) UIButton *downloadButton;
 
 @property (strong, nonatomic) UIStackView* stackView;
 @property (strong, nonatomic) KPIItem* item;
 @property (strong, nonatomic) UIImageView* playImgView;
-
 @property (strong, nonatomic) NSLayoutConstraint *changableConstraint;
+
+@property (strong, nonatomic) UIProgressView *progressView;
+@property (strong, readwrite, nonatomic ) NSProgress* progress;
 
 
 @end
@@ -44,7 +49,9 @@ CGFloat multiplier = 0.5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
 }
+
 
 
 - (instancetype)init {
@@ -61,14 +68,15 @@ CGFloat multiplier = 0.5;
 -(void)setupViews {
     [self setupScrollView];
     [self setupImageView];
- 
+    [self setupDownloadButton];
     [self setupTitleLabel];
     [self setupAuthorLabel];
     [self setupDateLabel];
     [self setupDetailsLabel];
     [self createStackView];
-    
     [self setupConstraints];
+    [self setupPlayView];
+    [self setupProgressView];
 }
 
 
@@ -98,10 +106,104 @@ CGFloat multiplier = 0.5;
                                    initWithTarget:self
                                    action:@selector(tapGestureHandle:)];
     [self.imageView addGestureRecognizer:tap];
-    [self.scrollView addSubview:self.imageView];
+    [self setupPlayView];
+   
 }
 
+-(void) setupPlayView{
+    [self.scrollView addSubview:self.imageView];
+    
+    
+    UIImageView* playImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+    
+     playImage.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.imageView addSubview:playImage];
+    
+    NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:playImage.superview
+                                                             attribute:NSLayoutAttributeLeading
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:playImage
+                                                             attribute:NSLayoutAttributeLeading
+                                                            multiplier:1.0
+                                                              constant:0.0];
+    NSLayoutConstraint *bottom = [NSLayoutConstraint
+                                  constraintWithItem:playImage.superview
+                                  attribute:NSLayoutAttributeBottom
+                                  relatedBy:NSLayoutRelationEqual
+                                  toItem:playImage
+                                  attribute:NSLayoutAttributeBottom
+                                  multiplier:1.0
+                                  constant:0.0];
+    [left setActive:YES];
+    [bottom setActive:YES];
+    [playImage.superview addConstraints: @[left, bottom]];
 
+}
+
+-(void)setupDownloadButton {
+    self.downloadButton = [[UIButton alloc] init];
+    [self.downloadButton addTarget:self action:@selector(downloadAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.downloadButton addSubview:self.progressView];
+    
+    
+}
+
+-(void) setupProgressView{
+    self.progressView = [[UIProgressView alloc] init];
+    self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
+    [[self.progressView layer]setBorderColor:[UIColor redColor].CGColor];
+       self.progressView.trackTintColor = [UIColor clearColor];
+    [self.progressView setProgress:0 animated:YES];
+    [self.progressView setHidden:YES];
+    
+     [self.downloadButton addSubview:self.progressView];
+    
+    NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.progressView.superview
+                                                            attribute:NSLayoutAttributeLeading
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self.progressView
+                                                            attribute:NSLayoutAttributeLeading
+                                                           multiplier:1.0
+                                                             constant:0.0];
+    
+    NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:self.progressView.superview
+                                                               attribute:NSLayoutAttributeTrailing
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.progressView
+                                                               attribute:NSLayoutAttributeTrailing
+                                                              multiplier:1.0
+                                                                constant:0.0];
+    
+    NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.progressView.superview
+                                                               attribute:NSLayoutAttributeBottom
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.progressView
+                                                               attribute:NSLayoutAttributeBottom
+                                                              multiplier:1.0
+                                                                constant:0.0];
+    [self.progressView setObservedProgress:self.progress];
+    
+    [NSLayoutConstraint activateConstraints:@[leading, trailing, bottom]];
+    [self.progressView.superview addConstraints: @[leading, trailing, bottom]];
+
+    
+//
+//
+//    UIProgressView *progressView;
+//    progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+//    progressView.progressTintColor = [UIColor colorWithRed:187.0/255 green:160.0/255 blue:209.0/255 alpha:1.0];
+//    [[progressView layer]setFrame:CGRectMake(20, 50, 200, 200)];
+//    [[progressView layer]setBorderColor:[UIColor redColor].CGColor];
+//    progressView.trackTintColor = [UIColor clearColor];
+//    [progressView setProgress:(float)(50/100) animated:YES];  ///15
+//
+//    [[progressView layer]setCornerRadius:progressView.frame.size.width / 2];
+//    [[progressView layer]setBorderWidth:3];
+//    [[progressView layer]setMasksToBounds:TRUE];
+//    progressView.clipsToBounds = YES;
+    
+   
+}
 
 -(void)setupTitleLabel {
     self.titleLabel = [[UILabel alloc] init];
@@ -115,6 +217,9 @@ CGFloat multiplier = 0.5;
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.textAlignment = NSTextAlignmentNatural;
     self.titleLabel.numberOfLines = 0;
+    
+    
+    
 }
 
 -(void)setupAuthorLabel {
@@ -124,6 +229,25 @@ CGFloat multiplier = 0.5;
     self.authorLabel.text = @"Author";
     self.authorLabel.textAlignment = NSTextAlignmentLeft;
     self.authorLabel.textColor = [UIColor darkGrayColor];
+  
+}
+
+
+
+
+-(void) check{
+    self.downloadButton.enabled = YES;
+    NSFileManager* filemanager = [NSFileManager defaultManager];
+    NSString *pathToDocuments = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+
+    NSString* pathToContent = [pathToDocuments stringByAppendingPathComponent:[self.item.mediaContentWebURL lastPathComponent]];
+    
+    if ([filemanager fileExistsAtPath:pathToContent] == NO){
+        [self.downloadButton setImage:[UIImage imageNamed:@"save"]  forState:UIControlStateNormal ];
+    } else{
+        [self.downloadButton setImage:[UIImage imageNamed:@"del"]  forState:UIControlStateNormal ];
+    }
+    
 }
 
 -(void)setupDateLabel {
@@ -151,7 +275,7 @@ CGFloat multiplier = 0.5;
 
 -(void)createStackView {
     self.stackView = [[UIStackView alloc] initWithArrangedSubviews:
-   @[self.authorLabel,self.titleLabel, self.dateLabel,self.detailsLabel]];
+   @[self.downloadButton, self.authorLabel,self.titleLabel, self.dateLabel,self.detailsLabel]];
 
     [self.stackView setAxis:UILayoutConstraintAxisVertical];
     self.stackView.spacing = 10.f;
@@ -214,42 +338,45 @@ CGFloat multiplier = 0.5;
 
 #pragma mark - Delegate
 - (void)itemWasSelected:(KPIItem *)item {
-
-   
-
     
+    self.item = item;
     self.authorLabel.text = item.author;
     self.titleLabel.text = item.title;
     self.dateLabel.text = [NSString getStringFromDate:item.publicationDate];
     self.detailsLabel.text = item.details;
-   // self.itemType = item.sourceType;
-    self.item = item;
-    
+    [self check];
+  
     
     CheckForOldHanselman* check = [[CheckForOldHanselman alloc] init];
     
     BOOL oldHanselman = [check checkForOldHanselman:item];
-    
-    UIImageView* playImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+
     
     if (oldHanselman) {
         [self.imageView setImage: [UIImage imageNamed:@"hanselminutesimg"]];
-         //[ UIImageViev  [UIImage imageNamed:@"Play"]];
-        
-        [self.imageView addSubview:playImage];
         return;
     }
     [self.imageView setImage: [UIImage imageWithData: item.imageFull.image]];
-    [self.imageView addSubview:playImage];
-        
+    
 }
-
-
 
 
 -(void)tapGestureHandle:(UITapGestureRecognizer*)tap {
     
-    AVPlayer *player = [AVPlayer playerWithURL:[NSURL URLWithString:self.item.mediaContentWebURL]];
+    NSFileManager* filemanager = [NSFileManager defaultManager];
+    NSString* pathToContent = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:self.item.content.name];
+    
+    NSURL* urlToContent;
+    
+    if ([filemanager fileExistsAtPath:pathToContent] == NO){
+        urlToContent = [NSURL URLWithString:self.item.mediaContentWebURL];
+    } else{
+        urlToContent = [NSURL fileURLWithPath:pathToContent];
+    }
+    
+   
+     AVPlayer *player = [AVPlayer playerWithURL:urlToContent];
+        
     AVPlayerViewController *controller = [[AVPlayerViewController alloc] init];
     [self presentViewController:controller animated:YES completion:nil];
     controller.player = player;
@@ -259,6 +386,26 @@ CGFloat multiplier = 0.5;
     
 }
 
+-(void)downloadAction:(UIButton*)button {
+    [self changeButton:button forState:UIControlStateHighlighted animated:YES];
+    [self changeButton:button forState:UIControlStateNormal animated:YES];
+
+    NSFileManager* filemanager = [NSFileManager defaultManager];
+    NSString* pathToContent = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:self.item.content.name];
+    
+    if (![filemanager fileExistsAtPath:pathToContent]) {
+        self.downloadButton.enabled = NO;
+        [self downloadContent];
+        [self.progressView setHidden:NO];
+        return;
+    }
+    
+    [filemanager removeItemAtPath:pathToContent error:nil];
+    
+    [self check];
+}
+
+
 - (void)changeButton:(UIButton*)button forState:(UIControlState)state animated:(BOOL)isAnimated {
     
     if (isAnimated) {
@@ -266,10 +413,58 @@ CGFloat multiplier = 0.5;
             if (state == UIControlStateNormal) {
                 button.backgroundColor = UIColor.whiteColor;
             } else {
-                button.backgroundColor = UIColor.greenColor;
+                button.backgroundColor = UIColor.lightGrayColor;
             }
         }];
     }
 }
+
+-(void) downloadContent{
+    NSURLSessionConfiguration* config =[NSURLSessionConfiguration defaultSessionConfiguration];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [queue setQualityOfService:NSQualityOfServiceUtility];
+    queue.maxConcurrentOperationCount = 1;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:queue];
+    NSURLSessionDownloadTask* task = [session downloadTaskWithURL:[NSURL URLWithString: self.item.mediaContentWebURL]];
+    
+    [task resume];
+    [session finishTasksAndInvalidate];
+    
+}
+
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+    self.progress  = downloadTask.progress;
+    CGFloat prog = (float)totalBytesWritten/totalBytesExpectedToWrite;
+    progress = (100.0*prog);
+    self.progress = [NSProgress progressWithTotalUnitCount:(int)(100.0*prog)];
+    NSLog(@"downloaded %d%%", (int)(100.0*prog));
+    
+}
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
+    // unused in this example
+}
+
+
+
+-(void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    NSLog(@"completed; error: %@", error);
+}
+
+- (void)URLSession:(nonnull NSURLSession *)session downloadTask:(nonnull NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(nonnull NSURL *)location {
+    NSFileManager* filemanager = [NSFileManager defaultManager];
+    NSData *data = [NSData dataWithContentsOfURL:location];
+    
+    NSString* pathToContent = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:self.item.content.name];
+    [filemanager createFileAtPath:pathToContent contents:data attributes:nil];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressView setHidden:YES];
+        [self check];
+    }) ;
+    
+}
+
 
 @end

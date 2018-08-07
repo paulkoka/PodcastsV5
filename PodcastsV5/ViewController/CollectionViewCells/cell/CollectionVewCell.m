@@ -9,7 +9,6 @@
 #import "NSString+stringFromDate.h"
 #import "KPILocalImagePreview+SetImage.h"
 #import "CheckForOldHanselman.h"
-//#import <UIKit/UIKit.h>
 
 static NSString * const kMusicPlaceHolder = @"placeholder";
 static NSString * const kVideoPlaceHolder = @"placeholder";
@@ -54,8 +53,8 @@ static NSString * const kVideoPlaceHolder = @"placeholder";
 
 -(void)setupViews {
     self.title  = [[UILabel alloc] initWithFrame:CGRectZero];
-    [self.title setFont:[UIFont systemFontOfSize:16 weight:UIFontWeightBold]];
-    self.title.numberOfLines = 3;
+    [self.title setFont:[UIFont systemFontOfSize:12 weight:UIFontWeightBold]];
+    self.title.numberOfLines = 4;
     [self.title setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisVertical];
     
     self.author = [[UILabel alloc] initWithFrame:CGRectZero];
