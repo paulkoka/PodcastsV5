@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F0D504A2117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F0D50482117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld */; };
 		2F2CA8E72117623D00BDB5DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA8E62117623D00BDB5DC /* AppDelegate.m */; };
-		2F2CA8F32117623D00BDB5DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F12117623D00BDB5DC /* Main.storyboard */; };
 		2F2CA8F52117623E00BDB5DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F42117623E00BDB5DC /* Assets.xcassets */; };
-		2F2CA8F82117623E00BDB5DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2CA8F62117623E00BDB5DC /* LaunchScreen.storyboard */; };
 		2F2CA8FB2117623E00BDB5DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA8FA2117623E00BDB5DC /* main.m */; };
 		2F2CA9292117628F00BDB5DC /* KPIContent+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9072117628F00BDB5DC /* KPIContent+CoreDataProperties.m */; };
 		2F2CA92A2117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9082117628F00BDB5DC /* KPILocalImagePreview+CoreDataClass.m */; };
@@ -42,6 +40,7 @@
 		2F2CA9A32117993D00BDB5DC /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9A12117993D00BDB5DC /* DetailViewController.m */; };
 		2F2CA9A721179D8700BDB5DC /* SplitController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9A621179D8600BDB5DC /* SplitController.m */; };
 		2F2CA9AA2117B3D200BDB5DC /* CheckForOldHanselman.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2CA9A92117B3D200BDB5DC /* CheckForOldHanselman.m */; };
+		2FB8800621184AF90003D145 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FB8800521184AF90003D145 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,9 +48,7 @@
 		2F2CA8E22117623D00BDB5DC /* PodcastsV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PodcastsV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F2CA8E52117623D00BDB5DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2F2CA8E62117623D00BDB5DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		2F2CA8F22117623D00BDB5DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F2CA8F42117623E00BDB5DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2F2CA8F72117623E00BDB5DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F2CA8F92117623E00BDB5DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F2CA8FA2117623E00BDB5DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2F2CA9062117628F00BDB5DC /* KPIContent+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KPIContent+CoreDataClass.h"; sourceTree = "<group>"; };
@@ -113,6 +110,7 @@
 		2F2CA9A621179D8600BDB5DC /* SplitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitController.m; sourceTree = "<group>"; };
 		2F2CA9A82117B3D200BDB5DC /* CheckForOldHanselman.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckForOldHanselman.h; sourceTree = "<group>"; };
 		2F2CA9A92117B3D200BDB5DC /* CheckForOldHanselman.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CheckForOldHanselman.m; sourceTree = "<group>"; };
+		2FB8800521184AF90003D145 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,9 +150,8 @@
 				2F2CA9042117628F00BDB5DC /* coreData */,
 				2F2CA8E52117623D00BDB5DC /* AppDelegate.h */,
 				2F2CA8E62117623D00BDB5DC /* AppDelegate.m */,
-				2F2CA8F12117623D00BDB5DC /* Main.storyboard */,
 				2F2CA8F42117623E00BDB5DC /* Assets.xcassets */,
-				2F2CA8F62117623E00BDB5DC /* LaunchScreen.storyboard */,
+				2FB8800521184AF90003D145 /* LaunchScreen.storyboard */,
 				2F2CA8F92117623E00BDB5DC /* Info.plist */,
 				2F2CA8FA2117623E00BDB5DC /* main.m */,
 				2F0D50482117EE1C006E6D37 /* KPIpodcasterV2frAug03.xcdatamodeld */,
@@ -385,9 +382,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F2CA8F82117623E00BDB5DC /* LaunchScreen.storyboard in Resources */,
 				2F2CA8F52117623E00BDB5DC /* Assets.xcassets in Resources */,
-				2F2CA8F32117623D00BDB5DC /* Main.storyboard in Resources */,
+				2FB8800621184AF90003D145 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,25 +430,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		2F2CA8F12117623D00BDB5DC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2F2CA8F22117623D00BDB5DC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2F2CA8F62117623E00BDB5DC /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2F2CA8F72117623E00BDB5DC /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2F2CA8FC2117623E00BDB5DC /* Debug */ = {

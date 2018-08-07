@@ -230,12 +230,17 @@ CGFloat multiplier = 0.5;
     
     BOOL oldHanselman = [check checkForOldHanselman:item];
     
+    UIImageView* playImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+    
     if (oldHanselman) {
         [self.imageView setImage: [UIImage imageNamed:@"hanselminutesimg"]];
+         //[ UIImageViev  [UIImage imageNamed:@"Play"]];
+        
+        [self.imageView addSubview:playImage];
         return;
     }
     [self.imageView setImage: [UIImage imageWithData: item.imageFull.image]];
-
+    [self.imageView addSubview:playImage];
         
 }
 
