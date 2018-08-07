@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "AppDelegate.h"
-@interface CollectionViewControllerWithCoreData : UICollectionViewController
+
+@interface CollectionViewControllerWithCoreData : UICollectionViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic) NSFetchedResultsController* fetchedResultsController;

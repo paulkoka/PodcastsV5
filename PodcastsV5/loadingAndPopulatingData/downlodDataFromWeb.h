@@ -12,4 +12,6 @@
 @interface downlodDataFromWeb : NSObject
 
 -(void) downloadDataForKPIItem:(KPIItem*)item;
+
+//-(void)saveContent:(KPIItem*) item toPath:(NSString*)pathToContent;
 @end

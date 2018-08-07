@@ -17,6 +17,7 @@
 
 static NSString *MyEntityName = @"KPIItem";
 
+
 @implementation KPIItem (AddSingleItem)
 
 
@@ -52,7 +53,8 @@ static NSString *MyEntityName = @"KPIItem";
         
         item.imagePreview = [KPILocalImagePreview addName:[itemDictionary objectForKey:tags.imageWebURL] inManagedObjectContext:context];
         
-       item.imageFull = [KPiLocalImageFull addName:[itemDictionary objectForKey:tags.imageWebURL] inManagedObjectContext:context];
+        item.imageFull = [KPiLocalImageFull addName:[itemDictionary objectForKey:tags.imageWebURL] inManagedObjectContext:context];
+        
         item.content = [KPIContent addName:[itemDictionary objectForKey:tags.contentWebURL] inManagedObjectContext:context];
     }
      return item;

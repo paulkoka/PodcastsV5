@@ -8,6 +8,7 @@
 
 #import "KPILocalImagePreview+SetImage.h"
 #import "downlodDataFromWeb.h"
+#import "CheckForOldHanselman.h"
 
 
 @implementation KPILocalImagePreview (SetImage)
@@ -26,15 +27,14 @@
         
             downlodDataFromWeb* downloader = [[downlodDataFromWeb alloc] init];
             [downloader downloadDataForKPIItem:self.toItem];
-    }
-    else{
-        NSLog(@"exists");
-    }
         
+
+    }
 }
 
+-(void)awakeFromInsert{
+    [super awakeFromInsert];
 
-
-
+}
 
 @end

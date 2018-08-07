@@ -1,15 +1,14 @@
 //
 //  CollectionVewCell.m
-//  PadcastsApp
+//  PodcastsV5
 //
-//  Created by Dzmitry Tarelkin on 7/25/18.
-//  Copyright © 2018 Dzmitry Tarelkin. All rights reserved.
-//
+//  Created by Pavel Koka on 8/5/18.
+//  Copyright © 2018 Pavel Koka. All rights reserved.
 
 #import "CollectionVewCell.h"
 #import "NSString+stringFromDate.h"
 #import "KPILocalImagePreview+SetImage.h"
-//#import <UIKit/UIKit.h>
+#import "CheckForOldHanselman.h"
 
 static NSString * const kMusicPlaceHolder = @"placeholder";
 static NSString * const kVideoPlaceHolder = @"placeholder";
@@ -54,8 +53,8 @@ static NSString * const kVideoPlaceHolder = @"placeholder";
 
 -(void)setupViews {
     self.title  = [[UILabel alloc] initWithFrame:CGRectZero];
-    [self.title setFont:[UIFont systemFontOfSize:16 weight:UIFontWeightBold]];
-    self.title.numberOfLines = 3;
+    [self.title setFont:[UIFont systemFontOfSize:12 weight:UIFontWeightBold]];
+    self.title.numberOfLines = 4;
     [self.title setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisVertical];
     
     self.author = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -97,16 +96,34 @@ static NSString * const kVideoPlaceHolder = @"placeholder";
     [self.author setTextAlignment:NSTextAlignmentLeft];
     [self setDateLabelWithDate:[NSString getStringFromDate:item.publicationDate] ];
     self.duration.text = item.duration;
+    
+    CheckForOldHanselman* check = [[CheckForOldHanselman alloc] init];
+    
+    BOOL oldHanselman = [check checkForOldHanselman:item];
+    
+    if (oldHanselman) {
+        self.imageView.image = [UIImage imageNamed:@"hanselminutesimgS"];
+        return;
+    }
+   
     if (!item.imagePreview.image) {
+        [item.imagePreview performSelector: @selector(awakeFromFetch)];
         self.imageView.image = [UIImage imageNamed:@"comingSoonPlaceholder"];
     }
     else{
-    self.imageView.image = [UIImage imageWithData:item.imagePreview.image];
+        [self setImage:item];
     }
+
+}
+
+-(void)setImage:(KPIItem*) item{
+    self.imageView.image = [UIImage imageWithData:item.imagePreview.image];
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.5f;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionFade;
     
-    NSLog(@"cell created");
-
-
+    [self.imageView.layer addAnimation:transition forKey:nil];
 }
 
 

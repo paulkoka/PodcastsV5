@@ -31,6 +31,17 @@ if ([string containsString:@"<p>"] )
     return string;
 }
 
++(NSString*)preapreforSaving:(NSString*)string1 and:(NSString*) string2{
+    if ([string2 isEqualToString:@"title"]) {
+        if ([string2 containsString:@" | "]) {
+            NSRange range = [string1 rangeOfString:@" | "];
+            if (NSNotFound != range.location) {
+                string1 = [string1 substringToIndex:(range.location)];
+            }
+        }
+    }
+    return string1;
+}
 
 
 @end

@@ -7,6 +7,9 @@
 //
 
 #import "KPILocalImagePreview+addName.h"
+#import <UIKit/UIKit.h>
+#import "UIImage+Compression.h"
+static NSString* hanselmanOld = @"hanselmanOld";
 
 static NSString* entityNameImg = @"KPILocalImagePreview";
 
@@ -32,6 +35,7 @@ static NSString* entityNameImg = @"KPILocalImagePreview";
         } else if (!matches.count){
             image = [NSEntityDescription insertNewObjectForEntityForName:entityNameImg inManagedObjectContext:context];
             image.name = name;
+
         }
         else {
             image = [matches lastObject];

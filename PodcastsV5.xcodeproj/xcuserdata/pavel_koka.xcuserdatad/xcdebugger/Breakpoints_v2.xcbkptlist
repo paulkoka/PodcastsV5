@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PodcastsV5/loadingAndPopulatingData/downlodDataFromWeb.m"
-            timestampString = "555190564.447471"
+            filePath = "PodcastsV5/AppDelegate.m"
+            timestampString = "555240201.227648"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "-URLSession:downloadTask:didFinishDownloadingToURL:"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-persistentContainer"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PodcastsV5/loadingAndPopulatingData/downlodDataFromWeb.m"
-            timestampString = "555190564.447988"
+            filePath = "PodcastsV5/coreData/customSubclassesMO/creatSubEntities/KPILocalImagePreview+addName.m"
+            timestampString = "555207566.44871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "-URLSession:downloadTask:didFinishDownloadingToURL:"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "+addName:inManagedObjectContext:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PodcastsV5/loadingAndPopulatingData/downlodDataFromWeb.m"
-            timestampString = "555190564.4480931"
+            filePath = "PodcastsV5/coreData/customSubclassesMO/creatSubEntities/KPILocalImagePreview+addName.m"
+            timestampString = "555207566.449035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "-URLSession:downloadTask:didFinishDownloadingToURL:"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "+addName:inManagedObjectContext:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PodcastsV5/AppDelegate.m"
-            timestampString = "555190564.4481879"
+            timestampString = "555240201.22794"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PodcastsV5/loadingAndPopulatingData/downlodDataFromWeb.m"
+            timestampString = "555215176.936361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "-downloadDataForKPIItem:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PodcastsV5/ViewController/CollectionViewCells/cell/CollectionVewCell.m"
+            timestampString = "555215176.936491"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "-setDataToLabelsFrom:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PodcastsV5/ViewController/CollectionViewCells/cell/CollectionVewCell.m"
+            timestampString = "555215176.936756"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "111"
             endingLineNumber = "111"
-            landmarkName = "-persistentContainer"
+            landmarkName = "-setDataToLabelsFrom:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PodcastsV5/coreData/setImagesAndContent/KPILocalImagePreview+SetImage.m"
+            timestampString = "555215176.936978"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "-awakeFromFetch"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
