@@ -14,8 +14,6 @@
 #import "CheckForOldHanselman.h"
 #import <QuartzCore/QuartzCore.h>
 
-static float progress;
-
 @interface DetailViewController ()<NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate>
 
 
@@ -34,7 +32,6 @@ static float progress;
 @property (strong, nonatomic) NSLayoutConstraint *changableConstraint;
 
 @property (strong, nonatomic) UIProgressView *progressView;
-@property (strong, readwrite, nonatomic ) NSProgress* progress;
 
 
 @end
@@ -153,7 +150,6 @@ CGFloat multiplier = 0.5;
     self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.progressView layer]setBorderColor:[UIColor redColor].CGColor];
        self.progressView.trackTintColor = [UIColor clearColor];
-    [self.progressView setProgress:0 animated:YES];
     [self.progressView setHidden:YES];
     
      [self.downloadButton addSubview:self.progressView];
@@ -181,27 +177,10 @@ CGFloat multiplier = 0.5;
                                                                attribute:NSLayoutAttributeBottom
                                                               multiplier:1.0
                                                                 constant:0.0];
-    [self.progressView setObservedProgress:self.progress];
+    
     
     [NSLayoutConstraint activateConstraints:@[leading, trailing, bottom]];
     [self.progressView.superview addConstraints: @[leading, trailing, bottom]];
-
-    
-//
-//
-//    UIProgressView *progressView;
-//    progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-//    progressView.progressTintColor = [UIColor colorWithRed:187.0/255 green:160.0/255 blue:209.0/255 alpha:1.0];
-//    [[progressView layer]setFrame:CGRectMake(20, 50, 200, 200)];
-//    [[progressView layer]setBorderColor:[UIColor redColor].CGColor];
-//    progressView.trackTintColor = [UIColor clearColor];
-//    [progressView setProgress:(float)(50/100) animated:YES];  ///15
-//
-//    [[progressView layer]setCornerRadius:progressView.frame.size.width / 2];
-//    [[progressView layer]setBorderWidth:3];
-//    [[progressView layer]setMasksToBounds:TRUE];
-//    progressView.clipsToBounds = YES;
-    
    
 }
 
@@ -428,29 +407,11 @@ CGFloat multiplier = 0.5;
     NSURLSessionDownloadTask* task = [session downloadTaskWithURL:[NSURL URLWithString: self.item.mediaContentWebURL]];
     
     [task resume];
+    [self.progressView setObservedProgress:task.progress];
     [session finishTasksAndInvalidate];
     
 }
 
-
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
-    self.progress  = downloadTask.progress;
-    CGFloat prog = (float)totalBytesWritten/totalBytesExpectedToWrite;
-    progress = (100.0*prog);
-    self.progress = [NSProgress progressWithTotalUnitCount:(int)(100.0*prog)];
-    NSLog(@"downloaded %d%%", (int)(100.0*prog));
-    
-}
-
--(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
-    // unused in this example
-}
-
-
-
--(void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    NSLog(@"completed; error: %@", error);
-}
 
 - (void)URLSession:(nonnull NSURLSession *)session downloadTask:(nonnull NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(nonnull NSURL *)location {
     NSFileManager* filemanager = [NSFileManager defaultManager];
