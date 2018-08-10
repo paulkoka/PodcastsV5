@@ -65,21 +65,15 @@
 
 -(void)parseRSSWithData:(NSData*)data{
 
-    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
-    [childContext setParentContext:self.appDelegate.persistentContainer.viewContext];
+    NSManagedObjectContext* context = [self.appDelegate.persistentContainer newBackgroundContext];
     
-    __weak typeof (self) weakSelf = self;
- 
-    CustomXMLParser *parser = [[CustomXMLParser alloc] init];
-    [parser startWithDataAndParse:data withContext:childContext];
-    
-    NSError *errorMOC = nil;
-    [childContext save:&errorMOC];
-    
-    [weakSelf.appDelegate.persistentContainer.viewContext performBlock:^{
-        NSError *errorMOC = nil;
-        [weakSelf.appDelegate.persistentContainer.viewContext save:&errorMOC];
+    [context performBlockAndWait:^{
+        CustomXMLParser *parser = [[CustomXMLParser alloc] init];
+        [parser startWithDataAndParse:data withContext:context];
     }];
+    
+    NSError* error;
+    [context save:&error];
 
 }
 

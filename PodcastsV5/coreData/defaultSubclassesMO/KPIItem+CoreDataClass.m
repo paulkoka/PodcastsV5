@@ -11,4 +11,14 @@
 
 @implementation KPIItem
 
+-(void)awakeFromInsert{
+    [super awakeFromInsert];
+    NSLog(@"awakeFromInsert");
+}
+
+-(void)awakeFromFetch{
+    [super awakeFromFetch];
+    NSLog(@"awakeFromFetch");
+}
+
 @end
